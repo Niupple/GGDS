@@ -1,0 +1,41 @@
+class BinTNode:
+	def __init__(self, data=-1, left=None, right=None):
+		self.data = data
+		self.left = left
+		self.right = right
+
+pre = input().split()
+mid = input().split()
+node = {i: BinTNode(i) for i in pre}
+pos = {mid[i] : i for i in range(len(mid))}
+head = 0
+pre.append("")
+
+def build(l, r, x):
+	global head
+	print(head, l, r)
+	if l > r:
+		return None
+	elif l == r:
+		head += 1
+		now = BinTNode(x)
+		return now
+	head += 1
+	m = pos[x]
+	now = BinTNode(x)
+	now.left = build(l, m-1, pre[head])
+	now.right = build(m+1, r, pre[head])
+	return now
+
+def dfs(now, out):
+	if now == None:
+		return
+	dfs(now.left, out)
+	dfs(now.right, out)
+	out.append(now)
+
+root = build(0, len(mid)-1, pre[0])
+out = []
+dfs(root, out)
+print(" ".join(out))
+
